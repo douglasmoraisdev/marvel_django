@@ -131,4 +131,4 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 django_heroku.settings(locals())
 
-DATABASES = {'default': dj_database_url.config(default='postgres://user:pass@localhost/dbname')}
+DATABASES = {'default': dj_database_url.config(default='postgres://epxdzktskfjhdv:91f41f24353fe2c7fb6eaa40f9778e35ca8e74e2784622c60ed4857aaf381fd8@ec2-54-204-26-236.compute-1.amazonaws.com:5432/d2br78di2ae017')}
