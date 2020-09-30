@@ -3,3 +3,4 @@ django-heroku
 gunicorn
 requests
 dj-database-url
+psycopg2-binary
