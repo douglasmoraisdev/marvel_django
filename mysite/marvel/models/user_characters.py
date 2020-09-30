@@ -8,7 +8,7 @@ class UserCharacters(models.Model):
 
     user = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
     character = models.ForeignKey(Characters, on_delete=models.CASCADE)
-    char_user_alias = models.CharField(max_length=100, blank=True, null=True)
+    char_user_alias = models.CharField(max_length=500, blank=True, null=True)
     is_favorite = models.BooleanField(default=False)
     added_at = models.DateTimeField('date added', default=now)
 

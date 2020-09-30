@@ -5,7 +5,7 @@ class Characters(models.Model):
 
     char_name = models.CharField(max_length=100)
     char_external_id = models.IntegerField(default=0)
-    char_external_url = models.CharField(max_length=100)
+    char_external_url = models.CharField(max_length=500)
     image_url = models.CharField(max_length=500, blank=True, null=True)
     description = models.CharField(max_length=500, blank=True, null=True)
     avaliable_comics = models.IntegerField(default=0)
