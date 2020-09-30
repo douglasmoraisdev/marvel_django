@@ -11,10 +11,14 @@ class HomeLoginView(View):
     template_name = 'marvel/home_login_template.html'
 
     def get(self, request, *args, **kwargs):
-        
-        # renderiza o formulario
-        form = self.form_class()
-        return render(request, self.template_name, {'form': form})
+
+        # se ja esta autenticado redireciona para o dashboard
+        if request.user.is_authenticated:
+            return HttpResponseRedirect(reverse('marvel:dashboard', args=()))
+        else:  
+            # senao renderiza o formulario
+            form = self.form_class()
+            return render(request, self.template_name, {'form': form})
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)

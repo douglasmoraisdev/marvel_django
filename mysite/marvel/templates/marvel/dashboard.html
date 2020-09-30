@@ -17,6 +17,47 @@
 
         <p>Welcome <b>{{username}}</b>. This is your Dashboard!</p>
         <p><a href="{% url 'marvel:logout' %}">Logout</a></p>
-        
+
+        <p>Search for a Marvel Character</p>
+        <form action="{% url 'marvel:search_character' %}" method="post">
+            {% csrf_token %}
+            {{ form_search }}
+            <input type="submit" value="Submit">
+        </form>
+        <p>{{ errormessage }}</p>
+
+        {% if not errormessage %}
+            {% for item in search_result %}
+            <div style='border: black 2px solid'>
+            <ul>
+                <img src='{{ item.image }}' style="width:80px"/>
+                <li>Name: {{ item.name }}</li>
+                <li><p>Description: {{ item.description }}</p></li>
+                <li><p>Total commics avaliable: {{ item.comics_available }}</p></li>
+                <li><p>Comics list (first 20)</li>
+                <ul>
+                {% for comics in item.comics_list%}
+                    <li>{{ comics }}</li>
+                {% endfor %}
+                </ul>
+                <li><p>Resources</li>
+                <ul>
+                {% for res in item.resources%}
+                    <li><a href='{{res.url}}' target='_blank'>{{ res.type }}</a></li>
+                {% endfor %}
+                </ul>
+            </ul>
+            <form action="{% url 'marvel:add_character' %}" method="post">
+                {% csrf_token %}
+                <input type="text" name="char_name" id="char_name" value={{item.name}} />
+                <input type="text" name="char_id" id="char_id" value={{item.external_id}} />
+                <input type="text" name="char_external_url" id="char_external_url" value={{item.external_id}} />
+
+
+                <input type="submit" value="Add {{ item.name }} do My Characters">
+            </form>
+            </div>
+            {% endfor %}
+        {% endif %}
     </body>
 </html>
