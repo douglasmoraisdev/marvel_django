@@ -6,11 +6,13 @@ class AddCharacterForm(forms.Form):
     char_id = forms.IntegerField(required=True)
     char_name = forms.CharField(max_length=100, required=True)
     char_external_url = forms.CharField(max_length=500, required=True)
+    image_url = forms.CharField(max_length=500, required=False)    
 
     def add(self, request):
         char_id = self.cleaned_data['char_id']
         char_name = self.cleaned_data['char_name']
         char_external_url = self.cleaned_data['char_external_url']
+        image_url = self.cleaned_data['image_url']
 
         # Verifica se o personagem já existe na base de dados
         try:
@@ -20,7 +22,8 @@ class AddCharacterForm(forms.Form):
             character = Characters(char_name=char_name,
                                    char_external_id=char_id,
                                    char_external_url='',
-                                    )
+                                   image_url=image_url
+                                  )
             character.save()
 
         # Associa o personagem ao usuario

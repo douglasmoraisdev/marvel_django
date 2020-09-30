@@ -8,6 +8,5 @@ class UserAccount(models.Model):
     age = models.IntegerField(default=0)
     favorite_character = models.ForeignKey(Characters, on_delete=models.CASCADE,  blank=True, null=True)
 
-
     def __str__(self):
         return self.user.first_name

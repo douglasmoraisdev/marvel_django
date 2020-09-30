@@ -15,7 +15,8 @@ class DashboardView(LoginRequiredMixin, View):
         form_search = self.form_class()
         form_add = AddCharacterForm()
 
-        username = request.user.username
-        return render(request, self.template_name, {'username': username,
+        # Renderiza as informações do Dashboard
+        user_first_name = request.user.first_name
+        return render(request, self.template_name, {'user_first_name': user_first_name,
                                                     'form_search': form_search,
                                                     'form_add': form_add})

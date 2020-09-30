@@ -13,12 +13,13 @@ class SearchCharacterView(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         errormessage = ''
         data = []
+        form = self.form_class()
 
         search_result = {}
-        if 'char_name' in request.POST:
-            form = SearchCharacterForm(request.POST)
-            if form.is_valid():
-                search_result = form.search()
+        if 'char_name_search' in request.POST:
+            form_search = SearchCharacterForm(request.POST)
+            if form_search.is_valid():
+                search_result = form_search.search()
 
                 # se encontrou resultado na api
                 if search_result['success']:
@@ -46,7 +47,8 @@ class SearchCharacterView(LoginRequiredMixin, View):
                 else:
                     errormessage = search_result['message']
 
-        else:
-            form = SearchCharacterForm()
-        return render(request, self.template_name, {'form': form, 'errormessage': errormessage, 'search_result': data})
+        return render(request, self.template_name, {'form_search': form, 
+                                                    'user_first_name': request.user.first_name,
+                                                    'errormessage': errormessage, 
+                                                    'search_result': data})
 
