@@ -18,6 +18,14 @@
         <p>Welcome <b>{{user_first_name}}</b>. This is your Dashboard!</p>
         <p><a href="{% url 'marvel:logout' %}">Logout</a></p>
 
+        <p>My Characters</p>
+        {% for item in my_characters%}
+            <ul>
+                <li>{{ item.character.char_name }}</li>
+                <li><img src="{{ item.character.image_url }}" style="width:100px"></li>
+            </ul>
+        {% endfor %}
+
         <p>Search for a Marvel Character</p>
         <form action="{% url 'marvel:search_character' %}" method="post">
             {% csrf_token %}

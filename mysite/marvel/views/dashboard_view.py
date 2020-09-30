@@ -5,6 +5,8 @@ from django.shortcuts import render
 from .forms.search_character_form import SearchCharacterForm
 from .forms.add_character_form import AddCharacterForm
 
+from ..models.user_characters import UserCharacters
+
 class DashboardView(LoginRequiredMixin, View):
     form_class = SearchCharacterForm
     template_name = 'marvel/dashboard.html'
@@ -17,6 +19,9 @@ class DashboardView(LoginRequiredMixin, View):
 
         # Renderiza as informações do Dashboard
         user_first_name = request.user.first_name
+        user_characters = UserCharacters.objects.filter(user=request.user.useraccount)
+
         return render(request, self.template_name, {'user_first_name': user_first_name,
+                                                    'my_characters': user_characters,
                                                     'form_search': form_search,
                                                     'form_add': form_add})
