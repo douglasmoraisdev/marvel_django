@@ -985,6 +985,12 @@
 			margin: 0 0 1em 0;
 			width: 100%;
 		}
+		.button.fit.red {
+			background-color: #ff8686;
+		}
+		.button.fit.green {
+			background-color: rgb(27, 160, 9);
+		}		
 
 		input[type="submit"].small,
 		input[type="reset"].small,
@@ -1167,7 +1173,6 @@
 		justify-content: center;
 		padding: 8em 4em 6em 4em;
 		min-height: 70vh;
-		background-image: url("../../images/banner.jpg");
 		background-position: center;
 		background-size: cover;
 		background-repeat: no-repeat;

@@ -90,7 +90,7 @@
 		// Poptrox.
 			$window.on('load', function() {
 
-				var $thumbs = $('.thumbnails');
+				var $thumbs = $('.thumbnailsx');
 
 				if ($thumbs.length > 0)
 					$thumbs.poptrox({

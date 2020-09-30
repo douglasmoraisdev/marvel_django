@@ -35,6 +35,7 @@ class SearchCharacterView(LoginRequiredMixin, View):
                         comics_available = results['comics']['available']
                         comics_list = [items['name'] for items in results['comics']['items']]
                         resources = [items for items in results['urls']]
+                        external_url = results['urls'][0]['url']
 
                         data.append({ 'external_id': external_id,
                                 'name': name,
@@ -42,7 +43,8 @@ class SearchCharacterView(LoginRequiredMixin, View):
                                 'image': image,
                                 'comics_available': comics_available,
                                 'comics_list': comics_list,
-                                'resources': resources
+                                'resources': resources,
+                                'external_url': external_url
                         })
                 else:
                     errormessage = search_result['message']

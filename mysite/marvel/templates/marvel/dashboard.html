@@ -9,11 +9,16 @@
 	</head>
 	<body id="top">
 
-        <section id="banner" data-video="images/banner">
+        <section id="banner" style="" data-video="image/banner">
             <div class="inner">
                 <header>
                     <h1>Dashboard</h1>
                     <p>Welcome <b>{{user_first_name}}</b>. This is your Dashboard!</p>
+                    <p>Enjoy your collection of {{my_characters|length}} characters</p>
+
+                    <p>To add more characters, please use the search:</p>
+					<a href="#main" class="more">Learn More</a>
+
                 </header>
             </div>
         </section>
@@ -29,12 +34,28 @@
 
                             {% for item in my_characters%}
                                    <div class="box">
-                                    <a href="{{ item.character.char_external_url }}" class="image fit"><img src="{{ item.character.image_url }}" alt="Image of {{ item.character.char_name }}" /></a>
+                                    <a href="{{ item.char_external_url }}" class="image fit"><img src="{{ item.image_url }}" alt="Image of {{ item.char_name }}" /></a>
                                     <div class="inner">
-                                        <h3>{{ item.character.char_name }}</h3>
-                                        <p>{{ item.character.char_name }}</p>
-                                        <a href="{{ item.character.char_external_url }}" class="button fit">More Info</a>
-                                        <a href="{{ item.character.char_external_url }}" class="button fit">Remove</a>                                        
+                                        <h3>{{ item.char_name }} {% if item.is_favorite %}<span>* Favorite *</span>{% endif %}</h3>
+                                        <p>{% if item.description %}{{ item.description }}{% endif %}</p>
+                                        <p>Avaliable Comics: <b>{{ item.avaliable_comics }}</b></p>
+                                        <a href="{{ item.char_external_url }}" class="button fit" target="_blank">More Info</a>
+
+
+                                        <form action="{% url 'marvel:character' %}" method="post">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="char_id" value="{{ item.char_id }}">                                            
+                                            <input type="hidden" name="_method" value="PUT">
+                                            <input type="submit" value="Make Favorite" class="button fit green">
+                                        </form>
+
+                                        <form action="{% url 'marvel:character' %}" method="post">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="char_id" value="{{ item.char_id }}">
+                                            <input type="hidden" name="_method" value="DELETE">
+                                            <input type="submit" value="Remove from Collection" class="button fit red">
+                                        </form>
+
                                     </div>
                                 </div>
 
@@ -47,7 +68,7 @@
 			<!-- Footer -->
 				<footer id="footer">
 					<div class="inner">
-                        <h4>Search for a Marvel Character</h4>
+                        <h4>Find more Marvel's Characters</h4>
                         <form action="{% url 'marvel:search_character' %}" method="post">
                             {% csrf_token %}
                             {{ form_search }}
@@ -58,6 +79,44 @@
 					</div>
 				</footer>
 
+                {% if not errormessage %}
+    				<footer id="footer-results">
+                        <div class="thumbnails">
+                        {% for item in search_result %}
+                            <div class="box">
+                                    <img src='{{ item.image }}' style="width:80px"/>
+                                    <li>Name: {{ item.name }}</li>
+                                    <li><p>Description: {{ item.description }}</p></li>
+                                    <li><p>Total commics avaliable: {{ item.comics_available }}</p></li>
+                                    <li><p>Comics list (first 20)</li>
+                                    <ul>
+                                    {% for comics in item.comics_list%}
+                                        <li>{{ comics }}</li>
+                                    {% endfor %}
+                                    </ul>
+                                    <li><p>Resources</li>
+                                    <ul>
+                                    {% for res in item.resources%}
+                                        <li><a href='{{res.url}}' target='_blank'>{{ res.type }}</a></li>                                
+                                    {% endfor %}
+                                    </ul>
+                                <form action="{% url 'marvel:character' %}" method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="_method" value="POST">
+                                    <input type="hidden" id="char_name" name="char_name" value="{{ item.name }}" />
+                                    <input type="hidden" id="char_id" name="char_id" value="{{ item.external_id }}" />
+                                    <input type="hidden" id="char_external_url" name="char_external_url" value="{{ item.external_url }}" />
+                                    <input type="hidden" id="image_url" name="image_url" value="{{ item.image }}" />
+                                    <input type="hidden" id="description" name="description" value="{{ item.description }}" />                
+                                    <input type="hidden" id="avaliable_comics" name="avaliable_comics" value="{{ item.comics_available }}" />                
+                                    <input type="submit" value="Add {{ item.name }} do My Characters">
+                                </form>
+                            </div>
+                        {% endfor %}
+                        </div>
+                    </footer>
+                {% endif %}
+
 		<!-- Scripts -->
 			<script src='{% static "marvel/assets/js/jquery.min.js" %}'></script>
 			<script src='{% static "marvel/assets/js/jquery.scrolly.min.js" %}'></script>
@@ -65,6 +124,16 @@
 			<script src='{% static "marvel/assets/js/skel.min.js" %}'></script>
 			<script src='{% static "marvel/assets/js/util.js" %}'></script>
 			<script src='{% static "marvel/assets/js/main.js" %}'></script>
+
+            <script language="javascript">
+                    {% for item in my_characters%}
+                        {% if item.is_favorite %}
+                            $( document ).ready(function() {
+                                $("#banner").attr("style", "background-image: url('{{item.image_url}}')");
+                            })
+                        {% endif %}                            
+                    {% endfor %}            
+            </script>
 
 	</body>
 </html>

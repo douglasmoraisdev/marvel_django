@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 
 from .forms.search_character_form import SearchCharacterForm
-from .forms.add_character_form import AddCharacterForm
+from .forms.character_form import CharacterForm
 
 from ..models.user_characters import UserCharacters
 
@@ -15,13 +15,24 @@ class DashboardView(LoginRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
         form_search = self.form_class()
-        form_add = AddCharacterForm()
+        form_add = CharacterForm()
+        my_characters = []
 
         # Renderiza as informações do Dashboard
         user_first_name = request.user.first_name
         user_characters = UserCharacters.objects.filter(user=request.user.useraccount)
 
+        for item in user_characters:
+            my_characters.append({'char_external_url': item.character.char_external_url,
+                                  'image_url': item.character.image_url,
+                                  'char_name': item.character.char_name,
+                                  'description': item.character.description,
+                                  'avaliable_comics': item.character.avaliable_comics,
+                                  'is_favorite': item.is_favorite,
+                                  'char_id': item.character.id
+                                })           
+
         return render(request, self.template_name, {'user_first_name': user_first_name,
-                                                    'my_characters': user_characters,
+                                                    'my_characters': my_characters,
                                                     'form_search': form_search,
                                                     'form_add': form_add})
