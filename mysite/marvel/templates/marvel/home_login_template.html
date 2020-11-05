@@ -1,27 +1,48 @@
-<!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+{% load static %}
+<!DOCTYPE HTML>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title></title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="">
-    </head>
-    <body>
-        <h1>Welcome to Marvel on Django</h1>
+	<head>
+		<title>Marvel Dashboard Login</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="stylesheet" href="{% static "marvel/assets/css/main.css" %}" />
+	</head>
+	<body id="top">
 
-        {% if errormessage %}{{ errormessage }}{% endif %}
-        <form action="{% url 'marvel:home_login' %}" method="post">
-            {% csrf_token %}
-            {{ form }}
-            <input type="submit" value="Submit">
-        </form>
-        
-        <script src="" async defer></script>
-    </body>
+        <section id="banner" style="" data-video="image/banner">
+            <div class="inner">
+                <header>
+                    <h1>Login</h1>
+                    {% if errormessage %}{{ errormessage }}{% endif %}
+                    <form action="{% url 'marvel:home_login' %}" method="post">
+                        {% csrf_token %}
+                        {{ form }}
+                        <br/>
+                        <input type="submit" value="Submit">
+                    </form>
+					<p>Try: <br/>
+					user: guest<br/>
+					password: django1234
+					<br/>
+					<span>;)</span>
+					</p>
+                </header>
+            </div>
+        </section>
+
+			<!-- Footer -->
+				<footer id="footer">
+					<div class="inner">
+                        <h4>Make a Awesome Marvel Collection --Using Django</h4>
+					</div>
+				</footer>
+		<!-- Scripts -->
+			<script src='{% static "marvel/assets/js/jquery.min.js" %}'></script>
+			<script src='{% static "marvel/assets/js/jquery.scrolly.min.js" %}'></script>
+			<script src='{% static "marvel/assets/js/jquery.poptrox.min.js" %}'></script>
+			<script src='{% static "marvel/assets/js/skel.min.js" %}'></script>
+			<script src='{% static "marvel/assets/js/util.js" %}'></script>
+			<script src='{% static "marvel/assets/js/main.js" %}'></script>
+
+	</body>
 </html>
